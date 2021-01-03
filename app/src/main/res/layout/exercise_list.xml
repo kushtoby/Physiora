@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/exercise_name"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:paddingLeft="8dp"
+        android:gravity="bottom"
+        android:background="@color/lemon_chiffon"
+        >
+
+    </TextView>
+    <TextView
+        android:id="@+id/exercise_number"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:textColor="@color/blue"
+        android:textSize="11sp"
+        android:paddingLeft="8dp"
+        android:gravity="top"
+        android:background="@color/lemon_chiffon">
+
+    </TextView>
+
+</LinearLayout>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/olive"
+    tools:context=".Registration"
+    android:paddingTop="100dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="171dp"
+        android:layout_gravity="center"
+        android:src="@drawable/physiora_olive">
+
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="12dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username"
+            android:textSize="10.8sp"
+            android:paddingTop="24dp"
+            android:layout_gravity="left"
+            android:textColor="@color/black">
+
+        </TextView>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:id="@+id/usernameRegET"
+            android:drawableRight="@drawable/ic_username"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress">
+        </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_email"
+            android:textSize="10.8sp"
+            android:layout_gravity="left"
+            android:textColor="@color/black">
+
+        </TextView>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailRegET"
+            android:textSize="18dp"
+            android:drawableRight="@drawable/ic"
+            android:textColorHint="@color/black"
+            android:inputType="textEmailAddress">
+        </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enter_your_password"
+            android:textSize="10.8sp"
+            android:layout_gravity="left"
+            android:textColor="@color/black">
+
+        </TextView>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordRegET"
+            android:textSize="18dp"
+            android:drawableRight="@drawable/ic_pass"
+            android:textColorHint="@color/black"
+            android:inputType="textPassword">
+        </EditText>
+
+        <Button
+            android:layout_width="140dp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/register_now"
+            android:id="@+id/regBtn"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:background="@drawable/ic_button">
+
+        </Button>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/already_have_an_account"
+                android:textSize="10.8sp">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_in_now"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="20sp"
+                android:id="@+id/loginRedirectTV"
+                android:textColor="@color/lemon_chiffon">
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

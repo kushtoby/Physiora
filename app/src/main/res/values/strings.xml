@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Physiora</string>
+    <string name="rehab">Rehab</string>
+    <string name="exercise">Exercise</string>
+    <string name="list">List</string>
+    <string name="arm_rehab">ARM</string>
+    <string name="leg_rehab">LEG</string>
+    <string name="balance_rehab">BALANCE</string>
+    <string name="minutes">7 minutes</string>
+    <string name="ten_workouts">10 workouts</string>
+    <string name="my_plan">My Plan</string>
+    <string name="settings">Settings</string>
+    <string name="report">Report</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello">Hello</string>
+    <string name="sign_in">Sign In</string>
+    <string name="enter_your_email">Email</string>
+    <string name="enter_your_password">Password</string>
+    <string name="login">Login</string>
+    <string name="log_in_now">Log In Now</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="register_now">Register</string>
+    <string name="create_user">Create User</string>
+    <string name="username">Username</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="virtual_physiotherapy">Virtual Physiotherapy</string>
+    <string name="physiora">Physiora</string>
+
+    <string-array name="type_exercises">
+        <item> Select An Exercise Type </item>
+        <item> Arm Exercise </item>
+        <item> Leg Exercise </item>
+        <item> Balance Exercise </item>
+    </string-array>
+    <string-array name="arm_exercises">
+        <item> Select An Exercise Number </item>
+        <item> A001 - {Exercise 1}</item>
+        <item> A002 - {Exercise 2}</item>
+        <item> A003 - {Exercise 3}</item>
+        <item> A004 - {Exercise 4}</item>
+        <item> A005 - {Exercise 5}</item>
+        <item> A006 - {Exercise 6}</item>
+        <item> A007 - {Exercise 7}</item>
+        <item> A008 - {Exercise 8}</item>
+        <item> A009 - {Exercise 9}</item>
+        <item> A010 - {Exercise 10}</item>
+    </string-array>
+    <string-array name="leg_exercises">
+        <item> Select An Exercise Number </item>
+        <item> B101 - {Exercise 1}</item>
+        <item> B102 - {Exercise 2}</item>
+        <item> B103 - {Exercise 3}</item>
+        <item> B104 - {Exercise 4}</item>
+        <item> B105 - {Exercise 5}</item>
+        <item> B106 - {Exercise 6}</item>
+        <item> B107 - {Exercise 7}</item>
+        <item> B108 - {Exercise 8}</item>
+        <item> B109 - {Exercise 9}</item>
+        <item> B110 - {Exercise 10}</item>
+    </string-array>
+    <string-array name="balance_exercises">
+        <item> Select An Exercise Number </item>
+        <item> C201 - {Exercise 1}</item>
+        <item> C202 - {Exercise 2}</item>
+        <item> C203 - {Exercise 3}</item>
+        <item> C204 - {Exercise 4}</item>
+        <item> C205 - {Exercise 5}</item>
+        <item> C206 - {Exercise 6}</item>
+        <item> C207 - {Exercise 7}</item>
+        <item> C208 - {Exercise 8}</item>
+        <item> C209 - {Exercise 9}</item>
+        <item> C210 - {Exercise 10}</item>
+    </string-array>
+    <string-array name="rep_exercise">
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+    </string-array>
+</resources>

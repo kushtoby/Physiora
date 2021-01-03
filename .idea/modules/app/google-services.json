@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "879012623438",
+    "project_id": "physiora-ae9f8",
+    "storage_bucket": "physiora-ae9f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879012623438:android:f3e0dfca3bf48b4c23bf1f",
+        "android_client_info": {
+          "package_name": "com.android.physiora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879012623438-dld968dkn9evcnhl1hv6igjvortviope.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.physiora",
+            "certificate_hash": "20d71bea363b42f7e1503ebff004747e925f80c6"
+          }
+        },
+        {
+          "client_id": "879012623438-sb2nntnuqpr07ta10c0pcm6mskhllc49.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtekmh_1Q5ntxflBiOQTApjet8YfOVyZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879012623438-sb2nntnuqpr07ta10c0pcm6mskhllc49.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
