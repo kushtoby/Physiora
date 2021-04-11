@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/lemon_chiffon">
+    <PreferenceCategory
+        android:title= "@string/account_settings"
+        >
+        <EditTextPreference
+            android:key="phone number"
+            android:title="@string/phoneNumber"
+            android:summary="Enter your phone number"
+            />
+        <EditTextPreference
+            android:key="password"
+            android:title="Enter New Password"
+            android:summary="Change password"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title= "@string/general_settings"
+        >
+        <SeekBarPreference
+            android:key="volume"
+            android:title="Volume"
+            android:summary="0%"
+            />
+        <SwitchPreferenceCompat
+            android:key="notification"
+            android:title="Notification"
+            android:summary="Do you wish Physiora to remind you when it is time to workout?"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title= "@string/workout_settings">
+        <ListPreference
+            android:key="countdown"
+            android:title="Countdown Time"
+            android:entries="@array/countdown_time"
+            android:summary="Select the number of seconds before the next exercise"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory>
+        <Preference
+            android:title= "@string/about_physiora"
+            android:summary="Physiora is an application for post-stroke rehabilitation using pose estimation techniques" />
+    </PreferenceCategory>
+</PreferenceScreen>

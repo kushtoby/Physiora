@@ -7,6 +7,7 @@ import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.extensions.HdrImageCaptureExtender;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -16,8 +17,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Size;
@@ -25,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -37,6 +37,7 @@ import static androidx.camera.core.CameraSelector.LENS_FACING_BACK;
 
 public class CameraFragment extends Fragment {
     CameraSelector cameraSelector;
+    int count = 0;
     Executor executor;
     PreviewView previewView;
     AppCompatActivity activity;
@@ -47,7 +48,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-      final  View view = inflater.inflate(R.layout.fragment_session, container, false);
+        View view = inflater.inflate(R.layout.fragment_session, container, false);
         previewView = view.findViewById(R.id.previewView);
         activity = (AppCompatActivity) view.getContext();
         return view;
@@ -90,7 +91,6 @@ public class CameraFragment extends Fragment {
 
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
-
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
@@ -103,7 +103,6 @@ public class CameraFragment extends Fragment {
                 .setTargetRotation(Surface.ROTATION_0)
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .build();
-
         cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(LENS_FACING_BACK)
                 .build();
@@ -113,10 +112,17 @@ public class CameraFragment extends Fragment {
                         .setTargetResolution(new Size(1280, 720))
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
-        imageAnalysis.setAnalyzer(executor, image -> {
-
-
-        });
+        imageAnalysis.setAnalyzer(executor, (ImageProxy image) -> {
+            //setAnalyzer to use Image instead of ImageProxy??
+            @SuppressLint("UnsafeExperimentalUsageError") Image img = image.getImage();
+            count++;
+            if (img != null) {
+                //converting to JPEG
+                byte[] jpegData = ImageUtils.imageToByteArray(img);
+                //write to file (for example ..some_path/frame.jpg)
+                FileManager.writeFrame(String.valueOf(count), jpegData);
+                image.close();
+        }});
 
         ImageCapture.Builder builder = new ImageCapture.Builder();
 

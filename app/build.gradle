@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.android.physiora"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     def camerax_version = "1.0.0-beta08"
+    def preference_version = "1.1.0"
     // The following line is optional, as the core library is included indirectly by camera-camera2
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
@@ -56,6 +57,7 @@ dependencies {
     implementation "androidx.camera:camera-extensions:1.0.0-alpha15"
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.preference:preference:$preference_version"
 }
 repositories {
     mavenCentral()

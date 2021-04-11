@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -28,11 +29,12 @@ public class SessionFragment extends Fragment {
 
             @Override
             public void run() {
+               Intent intent = new Intent( getActivity(), VideoPIP.class);
+               startActivity(intent);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 Fragment cameraFragment = new CameraFragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, cameraFragment).commit();
             }
         }, 5000);
-        // handler.removeCallbacksAndMessages(null);
     }
 }
