@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class FileManager {
+
     public static void writeFrame(String fileName, byte[] data) {
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileName));

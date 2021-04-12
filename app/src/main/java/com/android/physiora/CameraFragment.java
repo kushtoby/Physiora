@@ -27,8 +27,16 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -39,6 +47,7 @@ public class CameraFragment extends Fragment {
     CameraSelector cameraSelector;
     int count = 0;
     Executor executor;
+    public StorageReference mStorageRef, runThroughRef;
     PreviewView previewView;
     AppCompatActivity activity;
     private int REQUEST_CODE_PERMISSIONS = 1001;
@@ -48,6 +57,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         View view = inflater.inflate(R.layout.fragment_session, container, false);
         previewView = view.findViewById(R.id.previewView);
         activity = (AppCompatActivity) view.getContext();
@@ -120,7 +130,25 @@ public class CameraFragment extends Fragment {
                 //converting to JPEG
                 byte[] jpegData = ImageUtils.imageToByteArray(img);
                 //write to file (for example ..some_path/frame.jpg)
-                FileManager.writeFrame(String.valueOf(count), jpegData);
+              //  FileManager.writeFrame(String.valueOf(count), jpegData);
+              //  InputStream stream = new FileInputStream(new File("path/to/images/rivers.jpg"));
+                //    uploadTask = mStorageRef.putStream(stream);
+                StringBuilder sb = new StringBuilder();
+                sb.append(count).append(".jpg");
+                runThroughRef = mStorageRef.child(sb.toString());
+                UploadTask uploadTask = runThroughRef.putBytes(jpegData);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                    }
+                });
                 image.close();
         }});
 
