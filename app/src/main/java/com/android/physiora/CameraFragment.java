@@ -6,10 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
-import androidx.camera.extensions.HdrImageCaptureExtender;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
@@ -27,16 +25,25 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -47,9 +54,15 @@ public class CameraFragment extends Fragment {
     CameraSelector cameraSelector;
     int count = 0;
     Executor executor;
-    public StorageReference mStorageRef, runThroughRef;
+    public StorageReference mStorageRef, storagePositionRef;
     PreviewView previewView;
     AppCompatActivity activity;
+    FirebaseUser firebaseUser;
+    FirebaseDatabase firebaseDatabase;
+    String userName, type;
+    DatabaseReference databaseReference;
+    Bundle bundle;
+    Map<String, Object> InfMap;
     private int REQUEST_CODE_PERMISSIONS = 1001;
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA",
             "android.permission.RECORD_AUDIO"};
@@ -58,15 +71,41 @@ public class CameraFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://physiora-ae9f8-default-rtdb.europe-west1.firebasedatabase.app/");
+        databaseReference = firebaseDatabase.getReference();
         View view = inflater.inflate(R.layout.fragment_session, container, false);
         previewView = view.findViewById(R.id.previewView);
         activity = (AppCompatActivity) view.getContext();
+        userName = firebaseUser.getDisplayName();
+        bundle = this.getArguments();
+        if (bundle!=null){
+            type = bundle.getString("type");
+        }
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        databaseReference.child("live").child("Users").child(userName).child("exercise")
+                .child(type).child("afterInf").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                Map<String, Object> afterInfMap = dataSnapshot.getValue(Map.class);
+                if (afterInfMap != null) {
+                    InfMap = afterInfMap;
+                }
+                else {
+                    InfMap = new HashMap<>();
+                    InfMap.put("maxAngle", "0.0");
+                    InfMap.put("minAngle", "0.0");
+                    InfMap.put("percentage", "0.0");
+                }
+                databaseReference.child("live").child("Users").child(userName).child("exercise")
+                        .child(type).child("beforeInf").setValue(InfMap);
+            }
+        });
         if (allPermissionsGranted()) {
             startCamera();
         } else {
@@ -98,7 +137,6 @@ public class CameraFragment extends Fragment {
 
         cameraProviderFuture.addListener((Runnable) () -> {
             try {
-
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
@@ -113,54 +151,42 @@ public class CameraFragment extends Fragment {
                 .setTargetRotation(Surface.ROTATION_0)
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .build();
-        cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(LENS_FACING_BACK)
-                .build();
+            cameraSelector = new CameraSelector.Builder()
+                    .requireLensFacing(LENS_FACING_BACK)
+                    .build();
 
-        ImageAnalysis imageAnalysis =
-                new ImageAnalysis.Builder()
-                        .setTargetResolution(new Size(1280, 720))
-                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                        .build();
-        imageAnalysis.setAnalyzer(executor, (ImageProxy image) -> {
-            //setAnalyzer to use Image instead of ImageProxy??
-            @SuppressLint("UnsafeExperimentalUsageError") Image img = image.getImage();
-            count++;
-            if (img != null) {
-                //converting to JPEG
-                byte[] jpegData = ImageUtils.imageToByteArray(img);
-                //write to file (for example ..some_path/frame.jpg)
-              //  FileManager.writeFrame(String.valueOf(count), jpegData);
-              //  InputStream stream = new FileInputStream(new File("path/to/images/rivers.jpg"));
-                //    uploadTask = mStorageRef.putStream(stream);
-                StringBuilder sb = new StringBuilder();
-                sb.append(count).append(".jpg");
-                runThroughRef = mStorageRef.child(sb.toString());
-                UploadTask uploadTask = runThroughRef.putBytes(jpegData);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        // ...
-                    }
-                });
-                image.close();
-        }});
-
-        ImageCapture.Builder builder = new ImageCapture.Builder();
-
-        //Vendor-Extensions (The CameraX extensions dependency in build.gradle)
-        HdrImageCaptureExtender hdrImageCaptureExtender = HdrImageCaptureExtender.create(builder);
-        // Query if extension is available (optional).
-        if (hdrImageCaptureExtender.isExtensionAvailable(cameraSelector)) {
-            // Enable the extension if available.
-            hdrImageCaptureExtender.enableExtension(cameraSelector);
-        }
+            ImageAnalysis imageAnalysis =
+                    new ImageAnalysis.Builder()
+                            .setTargetResolution(new Size(640, 480))
+                            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                            .build();
+                imageAnalysis.setAnalyzer(executor, (ImageProxy image) -> {
+                    //setAnalyzer to use Image instead of ImageProxy??
+                    @SuppressLint("UnsafeExperimentalUsageError") Image img = image.getImage();
+                    count++;
+                    if (img != null) {
+                        //converting to JPEG
+                        byte[] jpegData = ImageUtils.imageToByteArray(img);
+                        StringBuilder sb = new StringBuilder();
+                        if (count % 10 == 0) {
+                            sb.append(userName).append(type).append(count/10).append(".jpg");
+                            storagePositionRef = mStorageRef.child(userName).child(type).child(sb.toString());
+                            UploadTask uploadTask = storagePositionRef.putBytes(jpegData);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle unsuccessful uploads
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                    // ...
+                                }
+                            });
+                        }
+                        image.close();
+                }});
         preview.setSurfaceProvider(previewView.createSurfaceProvider());
         cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageAnalysis);
     }
