@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
     TextView redirect;
     FirebaseAuth mAuth;
     ProgressDialog loadingBar;
-    SharedPreferences sharedPreferences, preferences;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,11 @@ public class Login extends AppCompatActivity {
         redirect = findViewById(R.id.registerRedirectTV);
         FirebaseApp.initializeApp(this);
         loadingBar = new ProgressDialog(this);
-        sharedPreferences = getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
 
         preferences = getApplicationContext().getSharedPreferences("MyUserPrefs", Context.MODE_PRIVATE);
-        String emailAddress = preferences.getString("email", "default");
-        String userPassword = preferences.getString("password", "default");
-        login(emailAddress, userPassword);
+            String emailAddress = preferences.getString("email", "default");
+            String userPassword = preferences.getString("password", "default");
+            login(emailAddress, userPassword);
 
         if (email.getText().toString().isEmpty() && password.getText().toString().isEmpty()) {
             loginBtn.setEnabled(false);
@@ -119,7 +118,7 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if (rememberMe.isChecked()) {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("email", emailAddress);
                                 editor.putString("password", userPassword);
                                 editor.apply();

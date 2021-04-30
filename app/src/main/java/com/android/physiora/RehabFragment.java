@@ -2,11 +2,13 @@ package com.android.physiora;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -44,6 +46,38 @@ public class RehabFragment extends Fragment {
             listItems.add(resultMap);
         }
         listView.setAdapter(adapter);
+        listView.isClickable();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                switch (position) {
+                    case 0:
+                        bundle.putString("type", "arm");
+                        break;
+                    case 1:
+                        bundle.putString("type", "balance");
+                        break;
+                    case 2:
+                        bundle.putString("type", "core");
+                        break;
+                    case 3:
+                        bundle.putString("type", "hand");
+                        break;
+                    case 4:
+                        bundle.putString("type", "leg");
+                        break;
+                    case 5:
+                        bundle.putString("type", "shoulder");
+                        break;
+                }
+                bundle.putString("source", "RehabFragment");
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                Fragment sessionFragment = new SessionFragment();
+                sessionFragment.setArguments(bundle);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, sessionFragment).commit();
+            }
+        });
         return view;
     }
 }

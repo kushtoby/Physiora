@@ -34,7 +34,8 @@
         <ListPreference
             android:key="countdown"
             android:title="Countdown Time"
-            android:entries="@array/countdown_time"
+            android:entries="@array/countdown_time_entry"
+            android:entryValues="@array/countdown_time_entryValue"
             android:summary="Select the number of seconds before the next exercise"
             />
     </PreferenceCategory>

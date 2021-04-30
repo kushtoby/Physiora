@@ -28,9 +28,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="450dp"
         android:orientation="vertical"
-        android:paddingTop="70dp"
+        android:paddingTop="30dp"
         android:background="@color/lemon_chiffon">
         <TextView
             android:layout_width="match_parent"
@@ -101,6 +101,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"/>
             <TextView
+                android:id="@+id/text3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start playing your unique My plan video on your TV"
@@ -156,5 +157,11 @@
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
     </LinearLayout>
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Theme.AppCompat.Light.NoActionBar"
+        />
 
 </LinearLayout>

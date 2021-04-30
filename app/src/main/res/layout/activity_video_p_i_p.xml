@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".VideoPIP">
     <VideoView
-        android:id="@+id/videoView"
+        android:id="@+id/videoVie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/Theme.AppCompat.Light.NoActionBar"

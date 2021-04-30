@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class Registration extends AppCompatActivity {
     EditText username, email, password;
@@ -36,7 +38,7 @@ public class Registration extends AppCompatActivity {
         redirect = findViewById(R.id.loginRedirectTV);
         loadingBar = new ProgressDialog(this);
 
-        if (username.getText().toString().isEmpty() && email.getText().toString().isEmpty() && password.getText().toString().isEmpty()) {
+        if (username.getText().toString().isEmpty() || email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
             register.setEnabled(false);
         }
         email.addTextChangedListener(new TextWatcher() {
@@ -65,7 +67,7 @@ public class Registration extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (password.getText().toString().trim().length() <= 8) {
+                if (password.getText().toString().trim().length() <= 8)  {
                     register.setEnabled(false);
                 }
             }
@@ -102,6 +104,12 @@ public class Registration extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Toast.makeText(Registration.this, "sign up error", Toast.LENGTH_LONG).show();
                 } else {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(username.getText().toString().trim()).build();
+
+                    user.updateProfile(profileUpdates);
                     Intent intent = new Intent(Registration.this, Login.class);
                     startActivity(intent);
                     Toast.makeText(Registration.this, "successful", Toast.LENGTH_LONG).show();

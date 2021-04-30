@@ -18,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 
     public class MyPlanFragment extends Fragment {
-        ListView planlistView;
+        ListView planListView;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final View view = inflater.inflate(R.layout.my_plan_activated, container, false);
-            planlistView = view.findViewById(R.id.plan_list_view);
+            planListView = view.findViewById(R.id.plan_list_view);
             LinkedHashMap<String, String> exerciseNumber = new LinkedHashMap<>();
             exerciseNumber.put("Run Through", "");
             exerciseNumber.put("Arm & Shoulder Exercise 1", "10 repetitions");
@@ -39,14 +39,26 @@ import java.util.Map;
                 resultMap.put(("Second Line"), pair.getValue().toString());
                 listItems.add(resultMap);
             }
-            planlistView.setAdapter(planAdapter);
-            planlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            planListView.setAdapter(planAdapter);
+            planListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-              /*  Intent intent = new Intent(view.getContext(), Session.class);
-                startActivity(intent);*/
+                    Bundle bundle = new Bundle();
+                    switch (position) {
+                        case 0:
+                            bundle.putString("type", "runthrough");
+                            break;
+                        case 1:
+                            bundle.putString("type", "armANDshoulder");
+                            break;
+                        case 2:
+                            bundle.putString("type", "armANDshoulder2");
+                            break;
+                    }
+                    bundle.putString("source", "MyPlanFragment");
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
                     Fragment sessionFragment = new SessionFragment();
+                    sessionFragment.setArguments(bundle);
                     activity.getSupportFragmentManager().beginTransaction().replace(R.id.container_fragment, sessionFragment).commit();
                 }
             });
